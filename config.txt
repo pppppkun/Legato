@@ -1,0 +1,36 @@
+## Configuration of Legato and baselines
+
+We provide the detailed parameter configurations for Legato and various baselines here. Since these baselines were originally designed for image classification tasks rather than fault localization, we also conducted a grid search for the baselines to tune the hyper-parameters.
+
+### Training parameters
+
+As we utilize GRACE and DepGraph as our base supervised GBFL, we use the same graph neural network followed by them. 
+Specifically, we apply a gated graph neural network with 5 graph layers. 
+
+To prevent underfitting and overfitting due to too few or too many epochs, we use 30 epochs. 
+We maximize the batch size based on the scale of the graphs to make full use of GPU memory. 
+In particular, we use a batch size of 12. 
+We employ the Adam optimizer, with a learning rate of 1e-3 and a weight decay of 1e-4. 
+The weight decay is L2 regularization.
+
+We use the same training paramters and model in all methods and experiments. 
+
+### $\Pi$-Model
+
+In $\Pi$-Model, we use the edge drop rate of 5% to conduct edge centrality-based graph augmentation.
+For the weight $w$ of the unlabeled loss, we follow the settings in the original paper that use a Gaussian ramp-up curve to scheduler it.
+
+
+### Pseudo-Labeling
+
+In Pseudo-Labeling, we also scheduler the weight $w$ of the unlabeled loss as recommanded in the original paper. Specifically, we set the $T_1 = 10, T_2 = 20, \alpha_f = 0.1$ and utilize the Eq. 16 in origianl paper to control the weight.
+
+### FixMatch
+
+In FixMatch, we configure the weak graph augmentation as edge drop rate of 5%, and configure the strong grap augmentation as edge drop rate of 15%.
+The fixed threshold $\tau$ used to retain a pseudo-label is set to 0.9.
+The weight $w$ of the unlabeled loss is set the 0.01.
+
+### Legato
+
+In our method, we set the edge drop rate $p$ of 5% to conduct graph augmentation, and the weight $\lambda_u$ of the unlabeled loss is set to 0.01.
